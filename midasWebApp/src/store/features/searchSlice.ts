@@ -1,64 +1,49 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface SearchResult {
-  docId: string;
-  source: string;
-  aNumber: string;
-  cNumber: string;
-  firstName: string;
-  middleName: string;
-  lastName: string;
-  yob: string;
-  mob: string;
-  dob: string;
-  countryOfBirth: string;
-  poBirth: string;
-  registeredState: string;
-  fileNumber: string;
-  poeText: string;
-  yoe: string;
-  lineNo: string;
-  rowNo: string;
-  format: string;
-  calcdSoundex: string;
-  soundex: string;
-  folderName: string;
-  access: boolean;
-}
-
 interface SearchState {
-  results: SearchResult[];
-  searchParams: Partial<SearchResult>;
+  results: Array<{
+    docId: string;
+    source: string;
+    aNumber: string;
+    cNumber: string;
+    folderName: string;
+    access: boolean;
+  }>;
   loading: boolean;
+  error: string | null;
 }
 
 const initialState: SearchState = {
   results: [],
-  searchParams: {},
   loading: false,
+  error: null,
 };
 
-export const searchSlice = createSlice({
+const searchSlice = createSlice({
   name: 'search',
   initialState,
   reducers: {
-    setSearchParams: (state, action: PayloadAction<Partial<SearchResult>>) => {
-      state.searchParams = action.payload;
+    startSearch(state) {
+      state.loading = true;
+      state.error = null;
     },
-    setSearchResults: (state, action: PayloadAction<SearchResult[]>) => {
+    searchSuccess(state, action: PayloadAction<SearchState['results']>) {
+      state.loading = false;
       state.results = action.payload;
     },
-    setLoading: (state, action: PayloadAction<boolean>) => {
-      state.loading = action.payload;
+    searchFailure(state, action: PayloadAction<string>) {
+      state.loading = false;
+      state.error = action.payload;
     },
-    toggleAccess: (state, action: PayloadAction<string>) => {
-      const result = state.results.find(r => r.docId === action.payload);
-      if (result) {
-        result.access = !result.access;
-      }
-    }
+    toggleAccess(state, action: PayloadAction<string>) {
+      state.results = state.results.map((result) =>
+        result.docId === action.payload
+          ? { ...result, access: !result.access }
+          : result
+      );
+    },
   },
 });
 
-export const { setSearchParams, setSearchResults, setLoading, toggleAccess } = searchSlice.actions;
+export const { startSearch, searchSuccess, searchFailure, toggleAccess } = searchSlice.actions;
 export default searchSlice.reducer;
