@@ -29,17 +29,17 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
   };
 
   return (
-    <Paper elevation={3} className={styles.container}>
+    <Paper elevation={12} className={styles.container}>
       <form onSubmit={handleSearch} aria-label="Search form">
         <Grid container spacing={2}>
           {error && (
-            <Grid item xs={12}>
+            <Grid item xs={8}>
               <Alert severity="error" role="alert">
                 {error}
               </Alert>
             </Grid>
           )}
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="Doc ID"
@@ -48,7 +48,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               aria-label="Document ID"
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="Source"
@@ -57,7 +57,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               aria-label="Source"
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="A Number"
@@ -65,7 +65,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('aNumber', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="C Number"
@@ -73,7 +73,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('cNumber', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="First Name"
@@ -81,7 +81,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('firstName', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="Middle Name"
@@ -89,7 +89,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('middleName', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="Last Name"
@@ -97,7 +97,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('lastName', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="YOB"
@@ -105,7 +105,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('yob', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="MOB"
@@ -113,7 +113,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('mob', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="DOB"
@@ -121,7 +121,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('dob', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="Country of Birth"
@@ -129,7 +129,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('countryOfBirth', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="PO Birth"
@@ -137,7 +137,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('poBirth', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="Registered State"
@@ -145,7 +145,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('registeredState', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="File Number"
@@ -153,7 +153,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('fileNumber', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="PO Text"
@@ -161,7 +161,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('poText', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="YOE"
@@ -169,7 +169,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('yoe', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="Line"
@@ -177,7 +177,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('line', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="Row No"
@@ -185,7 +185,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('rowNo', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="Format"
@@ -193,7 +193,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('format', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="Soundex"
@@ -201,7 +201,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('soundex', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="Calcd Soundex"
@@ -209,7 +209,7 @@ const SearchForm: React.FC<SearchFormProps> = ({ onSearch }) => {
               onChange={(e) => handleInputChange('calcdSoundex', e.target.value)}
             />
           </Grid>
-          <Grid item xs={12} sm={6} md={4}>
+          <Grid item xs={8} sm={4} md={2}>
             <TextField
               fullWidth
               label="Comment"

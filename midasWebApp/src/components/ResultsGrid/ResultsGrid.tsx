@@ -10,13 +10,12 @@ import {
   Box,
   CircularProgress,
   TablePagination,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
   Button,
+  Collapse,
 } from '@mui/material';
 import { Eye, Folder, Lock, Unlock } from 'lucide-react';
+import AddIcon from '@mui/icons-material/Add'; // Material-UI Add Icon
+import RemoveIcon from '@mui/icons-material/Remove'; // Material-UI Remove Icon
 import styles from './ResultsGrid.module.css'; // Import CSS Module
 
 interface ResultsGridProps {
@@ -25,6 +24,14 @@ interface ResultsGridProps {
     source: string;
     aNumber: string;
     cNumber: string;
+    firstName: string;
+    middleName: string;
+    lastName: string;
+    yob: string;
+    mob: string;
+    dob: string;
+    countryOfBirth: string;
+    poBirth: string;
     folderName: string;
     access: boolean;
     filePath: string; // Path to the folder
@@ -34,38 +41,10 @@ interface ResultsGridProps {
   onToggleAccess: (docId: string) => void;
 }
 
-interface ActionButtonProps {
-  label: string;
-  onClick: () => void;
-  icon: React.ReactNode;
-  ariaLabel: string;
-}
-
-const ActionButton: React.FC<ActionButtonProps> = ({ label, onClick, icon, ariaLabel }) => (
-  <button
-    onClick={onClick}
-    aria-label={ariaLabel}
-    style={{
-      display: 'flex',
-      alignItems: 'center',
-      gap: '0.5rem',
-      padding: '0.5rem 1rem',
-      border: '1px solid #ccc',
-      borderRadius: '4px',
-      background: 'white',
-      cursor: 'pointer',
-    }}
-  >
-    {icon}
-    {label}
-  </button>
-);
-
 const ResultsGrid: React.FC<ResultsGridProps> = ({ results, loading, onToggleAccess }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [openModal, setOpenModal] = useState(false);
-  const [modalImage, setModalImage] = useState<string | null>(null);
+  const [expandedRows, setExpandedRows] = useState<Set<string>>(new Set());
 
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -76,18 +55,24 @@ const ResultsGrid: React.FC<ResultsGridProps> = ({ results, loading, onToggleAcc
     setPage(0);
   };
 
+  const toggleRowExpansion = (docId: string) => {
+    setExpandedRows((prev) => {
+      const newSet = new Set(prev);
+      if (newSet.has(docId)) {
+        newSet.delete(docId);
+      } else {
+        newSet.add(docId);
+      }
+      return newSet;
+    });
+  };
+
   const handleOpenFolder = (filePath: string) => {
     window.open(filePath, '_blank'); // Open the folder path in a new tab
   };
 
   const handleViewImage = (imageUrl: string) => {
-    setModalImage(imageUrl); // Set the image URL for the modal
-    setOpenModal(true); // Open the modal
-  };
-
-  const handleCloseModal = () => {
-    setOpenModal(false); // Close the modal
-    setModalImage(null); // Clear the image URL
+    window.open(imageUrl, '_blank'); // Open the image URL in a new tab
   };
 
   if (loading) {
@@ -114,53 +99,111 @@ const ResultsGrid: React.FC<ResultsGridProps> = ({ results, loading, onToggleAcc
         <Table sx={{ minWidth: 650 }} aria-label="Results table">
           <TableHead>
             <TableRow>
+              <TableCell />
+              <TableCell>Doc ID</TableCell>
               <TableCell>Source</TableCell>
               <TableCell>A Number</TableCell>
               <TableCell>C Number</TableCell>
-              <TableCell>Doc ID</TableCell>
-              <TableCell>Folder Name</TableCell>
-              <TableCell>Access</TableCell>
-              <TableCell align="right">Actions</TableCell>
+              <TableCell>First Name</TableCell>
+              <TableCell>Middle Name</TableCell>
+              <TableCell>Last Name</TableCell>
+              <TableCell>YOB</TableCell>
+              <TableCell>MOB</TableCell>
+              <TableCell>DOB</TableCell>
+              <TableCell>Country of Birth</TableCell>
+              <TableCell>PO Birth</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {paginatedResults.map((row) => (
-              <TableRow key={row.docId}>
-                <TableCell>{row.source}</TableCell>
-                <TableCell>{row.aNumber}</TableCell>
-                <TableCell>{row.cNumber}</TableCell>
-                <TableCell>{row.docId}</TableCell>
-                <TableCell>{row.folderName}</TableCell>
-                <TableCell>{row.access ? 'Yes' : 'No'}</TableCell>
-                <TableCell align="right">
-                  <Box sx={{ display: 'flex', gap: 1, justifyContent: 'flex-end' }}>
-                    <ActionButton
-                      label="Set Access"
-                      onClick={() => onToggleAccess(row.docId)}
-                      icon={row.access ? <Unlock /> : <Lock />}
-                      ariaLabel={`Toggle access for document ${row.docId}`}
-                    />
-                    <ActionButton
-                      label="View"
-                      onClick={() => handleViewImage(row.imageUrl)}
-                      icon={<Eye />}
-                      ariaLabel={`View document ${row.docId}`}
-                    />
-                    <ActionButton
-                      label="Folder"
-                      onClick={() => handleOpenFolder(row.filePath)}
-                      icon={<Folder />}
-                      ariaLabel={`Open folder for document ${row.docId}`}
-                    />
-                  </Box>
-                </TableCell>
-              </TableRow>
+              <React.Fragment key={row.docId}>
+                <TableRow>
+                  <TableCell>
+                    <Button
+                      size="small"
+                      onClick={() => toggleRowExpansion(row.docId)}
+                      startIcon={expandedRows.has(row.docId) ? <RemoveIcon /> : <AddIcon />}
+                    >
+                      {expandedRows.has(row.docId) ? 'Collapse' : 'Expand'}
+                    </Button>
+                  </TableCell>
+                  <TableCell>{row.docId}</TableCell>
+                  <TableCell>{row.source}</TableCell>
+                  <TableCell>{row.aNumber}</TableCell>
+                  <TableCell>{row.cNumber}</TableCell>
+                  <TableCell>{row.firstName}</TableCell>
+                  <TableCell>{row.middleName}</TableCell>
+                  <TableCell>{row.lastName}</TableCell>
+                  <TableCell>{row.yob}</TableCell>
+                  <TableCell>{row.mob}</TableCell>
+                  <TableCell>{row.dob}</TableCell>
+                  <TableCell>{row.countryOfBirth}</TableCell>
+                  <TableCell>{row.poBirth}</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell colSpan={13} style={{ padding: 0 }}>
+                    <Collapse in={expandedRows.has(row.docId)} timeout="auto" unmountOnExit>
+                      <Box sx={{ margin: 2 }}>
+                        <Table size="small" aria-label="Sub-table">
+                          <TableHead>
+                            <TableRow>
+                              <TableCell>Source</TableCell>
+                              <TableCell>A Number</TableCell>
+                              <TableCell>C Number</TableCell>
+                              <TableCell>Folder Name</TableCell>
+                              <TableCell>Access</TableCell>
+                              <TableCell>Actions</TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            <TableRow key={`${row.docId}-sub`}>
+                              <TableCell>{row.source}</TableCell>
+                              <TableCell>{row.aNumber}</TableCell>
+                              <TableCell>{row.cNumber}</TableCell>
+                              <TableCell>{row.folderName}</TableCell>
+                              <TableCell>{row.access ? 'Yes' : 'No'}</TableCell>
+                              <TableCell>
+                                <Box sx={{ display: 'flex', gap: 1 }}>
+                                  <Button
+                                    size="small"
+                                    variant="outlined"
+                                    onClick={() => onToggleAccess(row.docId)}
+                                    startIcon={row.access ? <Unlock /> : <Lock />}
+                                  >
+                                    Set Access
+                                  </Button>
+                                  <Button
+                                    size="small"
+                                    variant="outlined"
+                                    onClick={() => handleViewImage(row.imageUrl)}
+                                    startIcon={<Eye />}
+                                  >
+                                    View
+                                  </Button>
+                                  <Button
+                                    size="small"
+                                    variant="outlined"
+                                    onClick={() => handleOpenFolder(row.filePath)}
+                                    startIcon={<Folder />}
+                                  >
+                                    Folder
+                                  </Button>
+                                </Box>
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </Box>
+                    </Collapse>
+                  </TableCell>
+                </TableRow>
+              </React.Fragment>
             ))}
           </TableBody>
         </Table>
       </TableContainer>
       <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
+        rowsPerPageOptions={[10, 20, 25]}
         component="div"
         count={results.length}
         rowsPerPage={rowsPerPage}
@@ -168,42 +211,8 @@ const ResultsGrid: React.FC<ResultsGridProps> = ({ results, loading, onToggleAcc
         onPageChange={handleChangePage}
         onRowsPerPageChange={handleChangeRowsPerPage}
       />
-
-      {/* Modal for viewing the image */}
-      <Dialog open={openModal} onClose={handleCloseModal} maxWidth="md" fullWidth>
-        <DialogTitle>View Document</DialogTitle>
-        <DialogContent>
-          {modalImage && <img src={modalImage} alt="Document" style={{ width: '100%' }} />}
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleCloseModal} color="primary">
-            Close
-          </Button>
-        </DialogActions>
-      </Dialog>
     </Paper>
   );
 };
-const results = [
-  {
-    docId: '1',
-    source: 'System A',
-    aNumber: 'A123',
-    cNumber: 'C456',
-    folderName: 'Folder 1',
-    access: true,
-    filePath: 'https://example.com/folder1',
-    imageUrl: 'https://example.com/image1.jpg',
-  },
-  {
-    docId: '2',
-    source: 'System B',
-    aNumber: 'A789',
-    cNumber: 'C012',
-    folderName: 'Folder 2',
-    access: false,
-    filePath: 'https://example.com/folder2',
-    imageUrl: 'https://example.com/image2.jpg',
-  },
-];
+
 export default ResultsGrid;
