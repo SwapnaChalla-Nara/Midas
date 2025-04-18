@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Container, Typography, Box, Alert } from '@mui/material';
+import { Container, Typography, Box, Alert, Button, TextField, Grid, Paper } from '@mui/material';
 import SearchForm from './components/SearchForm/SearchForm';
 import ResultsGrid from './components/ResultsGrid/ResultsGrid';
 import { RootState, AppDispatch } from './store/store';
 import { startSearch, searchSuccess, searchFailure, toggleAccess } from './store/features/searchSlice';
 import styles from './App.module.css';
 
-function App() {
+const App: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { results, loading, error } = useSelector((state: RootState) => state.search);
+  const [showGrid, setShowGrid] = useState(false);
+  const [searchParams, setSearchParams] = useState<Record<string, string>>({});
 
   const handleSearch = async (searchParams: Record<string, string>) => {
     dispatch(startSearch());
@@ -50,9 +52,14 @@ function App() {
       });
 
       dispatch(searchSuccess(response as any));
+      setShowGrid(true); // Show the grid after search
     } catch (err: any) {
       dispatch(searchFailure(err.message));
     }
+  };
+
+  const handleInputChange = (field: string, value: string) => {
+    setSearchParams((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleToggleAccess = (docId: string) => {
@@ -74,11 +81,36 @@ function App() {
           </Box>
         )}
 
-        <SearchForm onSearch={handleSearch} />
-        <ResultsGrid results={results} loading={loading} onToggleAccess={handleToggleAccess} />
+        <Paper elevation={3} sx={{ padding: 2, marginBottom: 2 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6} md={4}>
+              <TextField
+                fullWidth
+                label="Doc ID"
+                variant="outlined"
+                onChange={(e) => handleInputChange('docId', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12} sm={6} md={4}>
+              <TextField
+                fullWidth
+                label="Source"
+                variant="outlined"
+                onChange={(e) => handleInputChange('source', e.target.value)}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Button variant="contained" color="primary" onClick={() => handleSearch(searchParams)}>
+                Search
+              </Button>
+            </Grid>
+          </Grid>
+        </Paper>
+
+        <ResultsGrid results={results} loading={loading} onToggleAccess={handleToggleAccess} showGrid={showGrid} />
       </Box>
     </Container>
   );
-}
+};
 
 export default App;
