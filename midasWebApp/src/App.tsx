@@ -31,6 +31,8 @@ const App: React.FC = () => {
                 cNumber: 'C456',
                 folderName: 'Folder 1',
                 access: true,
+                imageUrl: 'https://catalog.archives.gov/iiif/3/lz%2Fpresidential-libraries%2Fobama%2Fbho-ero%2F217847615%2FTwitter_Gabi-Chojkier_2016-03-21_05_01.jpg/0,0,1024,1024/512,512/0/default.jpg',
+                filePath: '/path/to/folder1',
               },
               {
                 docId: '2',
@@ -39,6 +41,8 @@ const App: React.FC = () => {
                 cNumber: 'C012',
                 folderName: 'Folder 2',
                 access: false,
+                imageUrl: 'https://catalog.archives.gov/iiif/3/lz%2Fpresidential-libraries%2Fobama%2Fbho-ero%2F217847615%2FTwitter_Gabi-Chojkier_2015-04-16_02_01.jpg/0,0,1024,1024/512,512/0/default.jpg',
+                filePath: '/path/to/folder2',
               },
             ]);
           }
